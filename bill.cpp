@@ -8,8 +8,10 @@ Bill::Bill() : billID(0), patientID(0), appointmentID(0), amount(0) {
 Bill::Bill(int bid, int pid, int apid, double amt,
            const char* st, const char* d)
     : billID(bid), patientID(pid), appointmentID(apid), amount(amt) {
-    strncpy(status, st, 11); status[11] = '\0';
-    strncpy(date,   d,  11); date[11]   = '\0';
+    strncpy(status, st, 11); 
+    status[11] = '\0';
+    strncpy(date,   d,  11); 
+    date[11]   = '\0';
 }
 
 int         Bill::getID()            const { return billID; }

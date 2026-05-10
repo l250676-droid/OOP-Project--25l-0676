@@ -2,12 +2,10 @@
 #include <cstring>
 #include <ctime>
 
-// -----------------------------------------------------------
 // helper: manually convert a string of digits to integer
 // example: "28" -> 28
 // we multiply result by 10 each step and add next digit
 // '0' is ASCII 48, so s[i]-'0' gives the actual digit value
-// -----------------------------------------------------------
 static int toInt(const char* s) {
     int result = 0;
     for (int i = 0; s[i] != '\0'; i++) {
@@ -16,20 +14,16 @@ static int toInt(const char* s) {
     return result;
 }
 
-// -----------------------------------------------------------
 // helper: manually convert string like "1500.50" to double
 // split at the dot, handle whole part then decimal part
-// -----------------------------------------------------------
 static double toFloat(const char* s) {
     double result = 0;
     int i = 0;
-
     // whole number part before the dot
     while (s[i] != '\0' && s[i] != '.') {
         result = result * 10 + (s[i] - '0');
         i++;
     }
-
     // decimal part after the dot
     if (s[i] == '.') {
         i++;
@@ -44,20 +38,16 @@ static double toFloat(const char* s) {
     return result;
 }
 
-// -----------------------------------------------------------
 // helper: get length of string without using strlen
-// -----------------------------------------------------------
 static int strLen(const char* s) {
     int i = 0;
     while (s[i] != '\0') i++;
     return i;
 }
 
-// -----------------------------------------------------------
 // toLowerManual
 // 'A' is ASCII 65, 'a' is ASCII 97, difference is 32
 // so adding 32 to any uppercase letter makes it lowercase
-// -----------------------------------------------------------
 void Validator::toLowerManual(char* s) {
     for (int i = 0; s[i] != '\0'; i++) {
         if (s[i] >= 'A' && s[i] <= 'Z') {
@@ -65,12 +55,9 @@ void Validator::toLowerManual(char* s) {
         }
     }
 }
-
-// -----------------------------------------------------------
 // strEqualCI
 // compares two strings ignoring case
 // copies them first so originals are not changed
-// -----------------------------------------------------------
 bool Validator::strEqualCI(const char* a, const char* b) {
     char copyA[100], copyB[100];
     strncpy(copyA, a, 99); copyA[99] = '\0';
@@ -80,11 +67,9 @@ bool Validator::strEqualCI(const char* a, const char* b) {
     return strcmp(copyA, copyB) == 0;
 }
 
-// -----------------------------------------------------------
 // isPositiveFloat
 // valid:   "1500.00"  "500"  "0.5"
 // invalid: "-100"  "abc"  "0"  "1.2.3"
-// -----------------------------------------------------------
 bool Validator::isPositiveFloat(const char* s) {
     if (!s || s[0] == '\0') return false;
     if (s[0] == '-') return false;
@@ -101,12 +86,9 @@ bool Validator::isPositiveFloat(const char* s) {
 
     return toFloat(s) > 0;
 }
-
-// -----------------------------------------------------------
 // isValidDate
 // format must be DD-MM-YYYY
 // day 01-31, month 01-12, year >= current year
-// -----------------------------------------------------------
 bool Validator::isValidDate(const char* s) {
     if (!s || strLen(s) != 10) return false;
     if (s[2] != '-' || s[5] != '-') return false;
@@ -142,11 +124,8 @@ bool Validator::isValidDate(const char* s) {
 
     return true;
 }
-
-// -----------------------------------------------------------
 // isValidTimeSlot
 // only these 8 exact values are allowed
-// -----------------------------------------------------------
 bool Validator::isValidTimeSlot(const char* s) {
     const char* slots[8] = {
         "09:00", "10:00", "11:00", "12:00",
@@ -157,11 +136,8 @@ bool Validator::isValidTimeSlot(const char* s) {
     }
     return false;
 }
-
-// -----------------------------------------------------------
 // isValidContact
 // exactly 11 digits, nothing else
-// -----------------------------------------------------------
 bool Validator::isValidContact(const char* s) {
     if (!s || strLen(s) != 11) return false;
     for (int i = 0; i < 11; i++) {
@@ -169,20 +145,15 @@ bool Validator::isValidContact(const char* s) {
     }
     return true;
 }
-
-// -----------------------------------------------------------
 // isValidPassword
 // at least 6 characters
-// -----------------------------------------------------------
 bool Validator::isValidPassword(const char* s) {
     if (!s) return false;
     return strLen(s) >= 6;
 }
 
-// -----------------------------------------------------------
 // isPositiveInt
 // digits only and value > 0
-// -----------------------------------------------------------
 bool Validator::isPositiveInt(const char* s) {
     if (!s || s[0] == '\0') return false;
     for (int i = 0; s[i] != '\0'; i++) {
@@ -191,22 +162,18 @@ bool Validator::isPositiveInt(const char* s) {
     return toInt(s) > 0;
 }
 
-// -----------------------------------------------------------
 // isValidMenuChoice
 // number must be between min and max inclusive
-// -----------------------------------------------------------
 bool Validator::isValidMenuChoice(int choice, int min, int max) {
     return choice >= min && choice <= max;
 }
 
-// -----------------------------------------------------------
 // getCurrentDate
 // ctime() returns a string like:
 // "Tue May  5 14:32:10 2026\n"
 //  0123456789012345678901234
 // positions: day=8-9  month=4-6  year=20-23
 // we rearrange into DD-MM-YYYY manually
-// -----------------------------------------------------------
 void Validator::getCurrentDate(char* buf) {
     time_t t = time(nullptr);
     // ctime gives us a fixed format string we can parse
@@ -265,22 +232,18 @@ void Validator::getCurrentDate(char* buf) {
     buf[10] = '\0';
 }
 
-// -----------------------------------------------------------
 // dateNotPast
 // true if given date is today or in the future
-// -----------------------------------------------------------
 bool Validator::dateNotPast(const char* date) {
     char today[12];
     getCurrentDate(today);
     return compareDates(date, today) >= 0;
 }
 
-// -----------------------------------------------------------
 // compareDates
 // both in DD-MM-YYYY format
 // compare year first, then month, then day
 // returns negative if a < b, 0 if equal, positive if a > b
-// -----------------------------------------------------------
 int Validator::compareDates(const char* a, const char* b) {
     // extract year (position 6-9)
     char ya[5], yb[5];
@@ -306,13 +269,10 @@ int Validator::compareDates(const char* a, const char* b) {
     int dayB = toInt(db);
     return dayA - dayB;
 }
-
-// -----------------------------------------------------------
 // dateToSeconds
 // converts date to a plain number (total days)
 // used only to check if a bill is overdue by 7 days
 // year*365 + month*30 + day is close enough for this purpose
-// -----------------------------------------------------------
 double Validator::dateToSeconds(const char* date) {
     char da[3], ma[3], ya[5];
     da[0]=date[0]; da[1]=date[1]; da[2]='\0';

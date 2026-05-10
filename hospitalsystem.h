@@ -15,10 +15,8 @@
 class HospitalSystem {
 private:
 
-    // -----------------------------------------------------------
     // all data lives here in memory
     // loaded from files on startup
-    // -----------------------------------------------------------
     Storage<Patient>      patients;
     Storage<Doctor>       doctors;
     Storage<Appointment>  appointments;
@@ -34,23 +32,17 @@ private:
     // the 8 fixed daily time slots
     static const char* TIME_SLOTS[8];
 
-    // -----------------------------------------------------------
     // STARTUP
-    // -----------------------------------------------------------
     void loadAllData();
 
-    // -----------------------------------------------------------
     // LOGIN
     // each one tries 3 times before locking
     // returns true if login succeeded
-    // -----------------------------------------------------------
     bool loginPatient();
     bool loginDoctor();
     bool loginAdmin();
 
-    // -----------------------------------------------------------
     // PATIENT MENU FUNCTIONS
-    // -----------------------------------------------------------
     void patientMenu();
     void bookAppointment();
     void cancelAppointment();
@@ -60,9 +52,7 @@ private:
     void payBill();
     void topUpBalance();
 
-    // -----------------------------------------------------------
     // DOCTOR MENU FUNCTIONS
-    // -----------------------------------------------------------
     void doctorMenu();
     void viewTodayAppointments();
     void markComplete();
@@ -84,10 +74,8 @@ private:
     void viewSecurityLog();
     void generateDailyReport();
 
-    // -----------------------------------------------------------
     // HELPER FUNCTIONS
     // used by multiple menu functions
-    // -----------------------------------------------------------
 
     // get doctor name from their ID
     const char* getDoctorName(int doctorID);

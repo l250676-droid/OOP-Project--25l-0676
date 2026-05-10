@@ -10,8 +10,10 @@ Doctor::Doctor() : Person(), fee(0) {
 Doctor::Doctor(int id, const char* n, const char* spec,
                const char* con, const char* pass, double f)
     : Person(id, n, pass), fee(f) {
-    strncpy(specialization, spec, 49); specialization[49] = '\0';
-    strncpy(contact,        con,  11); contact[11]        = '\0';
+    strncpy(specialization, spec, 49); 
+    specialization[49] = '\0';
+    strncpy(contact,        con,  11); 
+    contact[11]  = '\0';
 }
 
 const char* Doctor::getSpecialization() const { return specialization; }

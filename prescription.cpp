@@ -5,8 +5,7 @@ Prescription::Prescription()
     date[0] = '\0'; medicines[0] = '\0'; notes[0] = '\0';
 }
 
-Prescription::Prescription(int pid, int apid, int patid, int did,
-                            const char* d, const char* m, const char* n)
+Prescription::Prescription(int pid, int apid, int patid, int did, const char* d, const char* m, const char* n)
     : prescriptionID(pid), appointmentID(apid),
       patientID(patid), doctorID(did) {
     strncpy(date,      d, 11);  date[11]       = '\0';
@@ -14,10 +13,10 @@ Prescription::Prescription(int pid, int apid, int patid, int did,
     strncpy(notes,     n, 299); notes[299]     = '\0';
 }
 
-int         Prescription::getID()            const { return prescriptionID; }
-int         Prescription::getAppointmentID() const { return appointmentID; }
-int         Prescription::getPatientID()     const { return patientID; }
-int         Prescription::getDoctorID()      const { return doctorID; }
-const char* Prescription::getDate()          const { return date; }
-const char* Prescription::getMedicines()     const { return medicines; }
-const char* Prescription::getNotes()         const { return notes; }
+int Prescription::getID() const { return prescriptionID; }
+int Prescription::getAppointmentID() const { return appointmentID; }
+int Prescription::getPatientID() const { return patientID; }
+int Prescription::getDoctorID() const { return doctorID; }
+const char* Prescription::getDate() const { return date; }
+const char* Prescription::getMedicines() const { return medicines; }
+const char* Prescription::getNotes() const { return notes; }

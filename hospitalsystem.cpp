@@ -11,10 +11,8 @@ const char* HospitalSystem::TIME_SLOTS[8] = {
     "13:00", "14:00", "15:00", "16:00"
 };
 
-// ============================================================
 // CONSTRUCTOR
 // loads everything from files into memory on startup
-// ============================================================
 HospitalSystem::HospitalSystem() : currentPatient(nullptr), currentDoctor(nullptr) {
     loadAllData();
 }
@@ -34,10 +32,7 @@ void HospitalSystem::loadAllData() {
     }
 }
 
-// ============================================================
 // HELPER FUNCTIONS
-// ============================================================
-
 // returns doctor name given their ID
 // returns "Unknown" if ID not found
 const char* HospitalSystem::getDoctorName(int doctorID) {
@@ -113,10 +108,8 @@ int HospitalSystem::countPendingAppointments(int patientID) {
     return count;
 }
 
-// ============================================================
 // MAIN RUN LOOP
 // shows the startup menu and routes to correct login
-// ============================================================
 void HospitalSystem::run() {
     while (true) {
         cout << "\nWelcome to MediCore Hospital Management System\n";
@@ -139,11 +132,9 @@ void HospitalSystem::run() {
     }
 }
 
-// ============================================================
 // LOGIN FUNCTIONS
 // each tries 3 times then locks
 // logs every failed attempt to security_log.txt
-// ============================================================
 bool HospitalSystem::loginPatient() {
     char idStr[20], pass[50];
     int attempts = 0;
@@ -229,10 +220,8 @@ bool HospitalSystem::loginAdmin() {
     return false;
 }
 
-// ============================================================
 // PATIENT MENU
 // loops until patient chooses logout
-// ============================================================
 void HospitalSystem::patientMenu() {
     while (true) {
         currentPatient->displayMenu();
@@ -376,19 +365,9 @@ void HospitalSystem::bookAppointment() {
     Validator::getCurrentDate(today);
 
     // --- step 9: create appointment and bill ---
-    Appointment newApp(newAppID,
-                       currentPatient->getID(),
-                       did,
-                       dateStr,
-                       slot,
-                       "pending");
+    Appointment newApp(newAppID, currentPatient->getID(), did, dateStr, slot, "pending");
 
-    Bill newBill(newBillID,
-                 currentPatient->getID(),
-                 newAppID,
-                 doc->getFee(),
-                 "unpaid",
-                 today);
+    Bill newBill(newBillID, currentPatient->getID(), newAppID, doc->getFee(), "unpaid", today);
 
     // add to storage
     appointments.add(newApp);

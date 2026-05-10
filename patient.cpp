@@ -7,11 +7,12 @@ Patient::Patient() : Person(), age(0), balance(0) {
     contact[0] = '\0';
 }
 
-Patient::Patient(int id, const char* n, int a, const char* g,
-                 const char* con, const char* pass, double bal)
+Patient::Patient(int id, const char* n, int a, const char* g, const char* con, const char* pass, double bal)
     : Person(id, n, pass), age(a), balance(bal) {
-    strncpy(gender,  g,   1);  gender[1]   = '\0';
-    strncpy(contact, con, 11); contact[11] = '\0';
+    strncpy(gender,  g,   1); 
+     gender[1]   = '\0';
+    strncpy(contact, con, 11); 
+    contact[11] = '\0';
 }
 
 int         Patient::getAge()     const { return age; }

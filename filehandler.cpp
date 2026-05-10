@@ -2,14 +2,11 @@
 #include <fstream>
 #include <cstring>
 #include <ctime>
-
-// -----------------------------------------------------------
 // splitCSV
 // takes one line like "1,Ahmed Ali,28,M,03001234567,pass123,5000.00"
 // splits it into fields array:
 // fields[0]="1"  fields[1]="Ahmed Ali"  fields[2]="28" etc
 // count tells you how many fields were found
-// -----------------------------------------------------------
 void FileHandler::splitCSV(const char* line, char fields[][256], int& count) {
     count = 0;
     int fieldIndex = 0;
@@ -36,11 +33,9 @@ void FileHandler::splitCSV(const char* line, char fields[][256], int& count) {
     count = fieldIndex + 1;
 }
 
-// -----------------------------------------------------------
 // parsePatient
 // line format: id,name,age,gender,contact,password,balance
 // example:     1,Ahmed Ali,28,M,03001234567,pass123,5000.00
-// -----------------------------------------------------------
 Patient FileHandler::parsePatient(const char* line) {
     char f[10][256];
     int c;
@@ -80,11 +75,9 @@ Patient FileHandler::parsePatient(const char* line) {
     return Patient(id, f[1], age, f[3], f[4], f[5], balance);
 }
 
-// -----------------------------------------------------------
 // parseDoctor
 // line format: id,name,specialization,contact,password,fee
 // example:     1,Dr. Sara Khan,Cardiology,03111234567,doc456,1500.00
-// -----------------------------------------------------------
 Doctor FileHandler::parseDoctor(const char* line) {
     char f[10][256];
     int c;
@@ -113,12 +106,9 @@ Doctor FileHandler::parseDoctor(const char* line) {
 
     return Doctor(id, f[1], f[2], f[3], f[4], fee);
 }
-
-// -----------------------------------------------------------
 // parseAppointment
 // line format: id,patientID,doctorID,date,timeSlot,status
 // example:     1,1,1,15-04-2025,09:00,completed
-// -----------------------------------------------------------
 Appointment FileHandler::parseAppointment(const char* line) {
     char f[10][256];
     int c;
@@ -133,11 +123,9 @@ Appointment FileHandler::parseAppointment(const char* line) {
     return Appointment(id, pid, did, f[3], f[4], f[5]);
 }
 
-// -----------------------------------------------------------
 // parseBill
 // line format: id,patientID,appointmentID,amount,status,date
 // example:     1,1,1,1500.00,paid,15-04-2025
-// -----------------------------------------------------------
 Bill FileHandler::parseBill(const char* line) {
     char f[10][256];
     int c;
@@ -167,12 +155,9 @@ Bill FileHandler::parseBill(const char* line) {
 
     return Bill(id, pid, apid, amount, f[4], f[5]);
 }
-
-// -----------------------------------------------------------
 // parsePrescription
 // line format: id,appointmentID,patientID,doctorID,date,medicines,notes
 // example:     1,1,1,1,15-04-2025,Paracetamol 500mg,Take after meals
-// -----------------------------------------------------------
 Prescription FileHandler::parsePrescription(const char* line) {
     char f[10][256];
     int c;
@@ -187,12 +172,9 @@ Prescription FileHandler::parsePrescription(const char* line) {
 
     return Prescription(id, apid, pid, did, f[4], f[5], f[6]);
 }
-
-// -----------------------------------------------------------
 // LOAD FUNCTIONS
 // open the file, read line by line, parse each line into
 // an object and add it to the Storage
-// -----------------------------------------------------------
 void FileHandler::loadPatients(Storage<Patient>& s) {
     ifstream fin("patient.txt");
     if (!fin.is_open()) {
@@ -290,12 +272,10 @@ bool FileHandler::loadAdmin(Admin& admin) {
     return false;
 }
 
-// -----------------------------------------------------------
 // APPEND FUNCTIONS
 // add ONE new record to the end of the file
 // used when creating a new patient, appointment, bill etc
 // ios::app means open in append mode — dont overwrite
-// -----------------------------------------------------------
 void FileHandler::appendPatient(const Patient& p) {
     ofstream f("patient.txt", ios::app);
     f << p.getID()      << ","
@@ -348,11 +328,9 @@ void FileHandler::appendPrescription(const Prescription& p) {
       << p.getNotes()         << "\n";
 }
 
-// -----------------------------------------------------------
 // SAVE ALL FUNCTIONS
 // rewrites the ENTIRE file from scratch using what is in Storage
 // used after any update (status change, balance change) or delete
-// -----------------------------------------------------------
 void FileHandler::saveAllPatients(Storage<Patient>& s) {
     ofstream f("patient.txt");
     for (int i = 0; i < s.size(); i++) {
@@ -405,15 +383,10 @@ void FileHandler::saveAllBills(Storage<Bill>& s) {
           << b.getDate()           << "\n";
     }
 }
-
-// -----------------------------------------------------------
 // logSecurity
 // writes a failed login attempt to security_log.txt
 // format: timestamp,role,enteredID,result
-// -----------------------------------------------------------
-void FileHandler::logSecurity(const char* role,
-                               const char* enteredID,
-                               const char* result) {
+void FileHandler::logSecurity(const char* role,const char* enteredID,const char* result) {
     ofstream f("security_log.txt", ios::app);
 
     // get current time as a string using ctime
@@ -437,12 +410,10 @@ void FileHandler::logSecurity(const char* role,
       << result    << "\n";
 }
 
-// -----------------------------------------------------------
 // getMaxID
 // reads a file and finds the largest ID in the given column
 // col=0 means first column (which is always the ID column)
 // used to generate new IDs: newID = getMaxID(...) + 1
-// -----------------------------------------------------------
 int FileHandler::getMaxID(const char* filename, int col) {
     ifstream fin(filename);
     if (!fin.is_open()) return 0;
@@ -466,11 +437,9 @@ int FileHandler::getMaxID(const char* filename, int col) {
     return maxID;
 }
 
-// -----------------------------------------------------------
 // archivePatient
 // copies the patient and all their records into discharged.txt
 // called before deleting them from the system
-// -----------------------------------------------------------
 void FileHandler::archivePatient(const Patient& p,
                                   Storage<Appointment>& apps,
                                   Storage<Bill>& bills,
@@ -527,11 +496,9 @@ void FileHandler::archivePatient(const Patient& p,
     }
 }
 
-// -----------------------------------------------------------
 // deletePatientRecords
 // removes this patient from all 4 Storage objects
 // then rewrites all 4 files
-// -----------------------------------------------------------
 void FileHandler::deletePatientRecords(int patientID,
                                         Storage<Patient>& patients,
                                         Storage<Appointment>& apps,

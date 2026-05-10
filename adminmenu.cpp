@@ -15,7 +15,7 @@ void HospitalSystem::adminMenu() {
         int choice;
         cin >> choice;
 
-        if      (choice == 1)  addDoctor();
+        if (choice == 1)  addDoctor();
         else if (choice == 2)  removeDoctor();
         else if (choice == 3)  viewAllPatients();
         else if (choice == 4)  viewAllDoctors();
